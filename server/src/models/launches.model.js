@@ -1,12 +1,14 @@
 const launches = require('./launches.mongo');
-const planets = require('./planets.mongo')
+const planets = require('./planets.mongo');
+const axios = require ('axios');
 
 const DEFAULT_FLIGHT_NUMBER = 100;
+const SPACEX_API_URL = 'https://api.spacexdata.com/v5/launches/query';
 
-//const launches = new Map();
+
 
 // Example launch created
-const launch = {
+/*const launch = {
     flightNumber: 100,
     mission: 'Kepler Exploration X',
     rocket: 'Explorer IS1',
@@ -18,8 +20,89 @@ const launch = {
 
 };
 // Example launch save to DB
-saveLaunchToMongoDB(launch)
+saveLaunchToMongoDB(launch);
+*/
 
+// post req with axios to  third party API
+async function populateDatabase(){
+    console.log('Downloading launch data from SpaceX-API...');
+
+    const response = await axios.post(SPACEX_API_URL, {
+        query: {},
+        options: {
+            pagination: false,
+            populate: [
+                {
+                    path: 'rocket',
+                    select:{
+                        name: 1
+                    }
+                },
+                {
+                    path: 'payloads',
+                    select: {
+                        'customers':1
+                    }
+                }
+            ]
+        }
+
+    });
+
+    const launchDocs = response.data.docs;
+    
+    for(const launchDoc of launchDocs){
+
+        const payloads = launchDoc['payloads'];
+
+        const customers = payloads.flatMap((payload) =>{
+            return payload['customers'];
+        });
+
+        const launch = {
+            flightNumber: launchDoc['flight_number'],
+            mission: launchDoc['name'],
+            rocket: launchDoc['rocket']['name'],
+            launchDate: launchDoc['date_local'],
+            upcoming: launchDoc['upcoming'],
+            success: launchDoc['success'],
+            customers: customers
+            
+        };
+
+        console.log(`Launch flight number is ${launch.flightNumber} mission ${launch.mission}`)
+        await saveLaunchToMongoDB(launch);
+        
+    }
+
+    
+}
+
+
+
+async function loadLaunchData(){
+
+    const launchInDatabase = await findLaunch({
+        flightNumber:1,
+        rocket:'Falcon 1',
+        mission:'FalconSat'
+    });
+
+    if(launchInDatabase){
+        console.log(`Launch data has been loaded`);
+    }
+    else {
+        await populateDatabase();
+        console.log('Populating DB')
+    }
+  
+}
+
+
+// Generic find laucnh from MONGO DATABASE
+async function findLaunch(filter){
+    return await launches.findOne(filter);
+}
 
 async function existsLaunchById(launchId) {
     return await launches.findOne({
@@ -45,27 +128,23 @@ async function getLatestFlightNumber(){
 
 
 
-async function getAllLaunches(){
+async function getAllLaunches(skip, limit){
     
-    //return Array.from(launches.values());
+    // /launches/?limit=5&page=1
     return await launches
-        .find({},{ '_id':0, '__v':0 });
+        .find({},{ '_id':0, '__v':0 })
+        .skip(skip)
+        .limit(limit);
 }
 
 
 
 
 async function saveLaunchToMongoDB(launch){
-    // Check if target truly exists in planets DB
-    const planet = await planets.findOne({
-        keplerName: launch.target,
-    });
 
-    if(!planet) {
-        throw new Error('No matching planet found');
-    }
+
     // await launches.findOneAndUpdate
-    await launches.updateOne({
+    await launches.findOneAndUpdate({
         flightNumber: launch.flightNumber,
     }, launch, {
         upsert: true
@@ -76,6 +155,16 @@ async function saveLaunchToMongoDB(launch){
 
 
 async function scheduleNewLaunch(launch){
+
+     // Check if target truly exists in planets DB
+     const planet = await planets.findOne({
+        keplerName: launch.target,
+    });
+
+    if(!planet) {
+        throw new Error('No matching planet found');
+    }
+
     const newFlightNumber = await getLatestFlightNumber() + 1;
 
     const newLaunch = Object.assign(launch, {
@@ -109,5 +198,6 @@ module.exports ={
     saveLaunchToMongoDB,
     existsLaunchById,
     abortLaunchById,
-    scheduleNewLaunch
+    scheduleNewLaunch,
+    loadLaunchData
 }

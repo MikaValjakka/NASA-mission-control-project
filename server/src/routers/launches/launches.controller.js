@@ -1,10 +1,11 @@
 const launchesModel  = require('../../models/launches.model');
-
+const { getPagination} = require('../../services/query')
 /*CRUD FUNCTIONS*/ 
 
 //---------- READ -----------
 async function getAllLaunches(req, res) {
-  return res.status(200).json(await launchesModel.getAllLaunches());
+  const {skip, limit} = getPagination(req.query);
+  return res.status(200).json(await launchesModel.getAllLaunches(skip, limit));
 }
 
 
