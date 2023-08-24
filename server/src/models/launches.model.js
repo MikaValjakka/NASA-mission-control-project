@@ -65,7 +65,7 @@ async function populateDatabase(){
             rocket: launchDoc['rocket']['name'],
             launchDate: launchDoc['date_local'],
             upcoming: launchDoc['upcoming'],
-            success: launchDoc['success'],
+            success: launchDoc['success'] ?? false,
             customers: customers
             
         };
@@ -133,6 +133,7 @@ async function getAllLaunches(skip, limit){
     // /launches/?limit=5&page=1
     return await launches
         .find({},{ '_id':0, '__v':0 })
+        .sort({flightNumber: 1})
         .skip(skip)
         .limit(limit);
 }
@@ -143,7 +144,7 @@ async function getAllLaunches(skip, limit){
 async function saveLaunchToMongoDB(launch){
 
 
-    // await launches.findOneAndUpdate
+    
     await launches.findOneAndUpdate({
         flightNumber: launch.flightNumber,
     }, launch, {
