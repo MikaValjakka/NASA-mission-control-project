@@ -11,7 +11,9 @@
     "client": "cd client && npm start",
     "watch": "npm run server | npm run client",
     "deploy":"cd client && npm run build && cd server && npm start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test-server": "cd server && npm test",
+    "test-client": "cd client && npm test",
+    "test": "test-server && test-client"
   },
   "keywords": [],
   "author": "",
