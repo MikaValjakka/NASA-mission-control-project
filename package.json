@@ -13,7 +13,7 @@
     "deploy":"cd client && npm run build && cd server && npm start",
     "test-server": "cd server && npm test",
     "test-client": "cd client && npm test",
-    "test": "test-server && test-client"
+    "test": "npm run test-server && npm run test-client"
   },
   "keywords": [],
   "author": "",
