@@ -1,13 +1,16 @@
 # NASA Mission Control Project
 
-Welcome to the NASA Mission Control Project! This project was part of Udemy course "Complete NodeJS Developer in 2023" where I build, in course, the projects backend. This project is designed to demonstrate the capabilities of a full-stack application using Node.js, Express, MongoDB, and React. 
+Welcome to the NASA Mission Control Project! This project originated from the Udemy course "Complete NodeJS Developer in 2023," where I built the backend as part of the course curriculum. The project is designed to showcase the capabilities of a full-stack application using Node.js, Express, MongoDB, and React.
 It showcases how we can collect data on habitable planets, manage rocket launches, and utilize external APIs, such as SpaceX, to enhance our mission control capabilities.
 Additionally, we have implemented continuous integration using GitHub Actions for efficient and automated testing.
-## What I have learned
-- What is nodejs and how to use it.
-- How to connect nodejs to different databases incuding mongoDB, mySQL etc.
-- How to secure node backend with different middlewares and using JWT and bcrypt.
-- How to connect Nodejs backend to frontend like REact or Angular.
+
+## Key Learnings
+
+- Understanding the fundamentals of Node.js and its application in building scalable web applications.
+- Establishing secure practices in the backend, incorporating middlewares, JWT, and bcrypt for enhanced security.
+- Exploring database connectivity with Node.js, covering MongoDB, mySQL, and other databases.
+- Implementing continuous integration using GitHub Actions for automated testing and deployment.
+
 
 ## Project Overview
 
