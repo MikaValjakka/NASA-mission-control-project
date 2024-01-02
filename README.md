@@ -4,10 +4,10 @@ Welcome to the NASA Mission Control Project! This project was part of Udemy cour
 It showcases how we can collect data on habitable planets, manage rocket launches, and utilize external APIs, such as SpaceX, to enhance our mission control capabilities.
 Additionally, we have implemented continuous integration using GitHub Actions for efficient and automated testing.
 ## What I have learned
-What is nodejs and how to use it.
-How to connect nodejs to different databases incuding mongoDB, mySQL etc.
-How to secure node backend with different middlewares and using JWT and bcrypt.
-How to connect Nodejs backend to frontend like REact or Angular.
+- What is nodejs and how to use it.
+- How to connect nodejs to different databases incuding mongoDB, mySQL etc.
+- How to secure node backend with different middlewares and using JWT and bcrypt.
+- How to connect Nodejs backend to frontend like REact or Angular.
 
 ## Project Overview
 
