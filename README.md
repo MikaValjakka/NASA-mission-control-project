@@ -18,7 +18,7 @@ The NASA Mission Control Project consists of the following components:
 
 - **Node.js and Express Backend**: The backend of the project is built with Node.js and Express, providing the API endpoints for managing planets and rocket launches. It utilizes MongoDB as its database for storing planet data and launches.
 
-- **React Frontend**: The frontend of the project is built using React. It displays information about habitable planets and allows users to interact with the rocket launch system. The frontend communicates with the backend API to fetch and display data.
+- **React Frontend**: The frontend of the project is built using React. It displays information about habitable planets and allows users to interact with the rocket launch system. The frontend communicates with the backend API to fetch and display data. **React code in this project was not made by me!**
 
 - **MongoDB Database**: MongoDB is used to store data about habitable planets.
 - The data is collected from the `kepler_data.csv` file.
